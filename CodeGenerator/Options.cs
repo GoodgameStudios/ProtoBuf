@@ -100,6 +100,9 @@ namespace SilentOrbit.ProtocolBuffers
         [Option("no-generate-imported", Required = false, HelpText = "Don't generate code from imported .proto files.")]
         public bool NoGenerateImported { get; set; }
 
+        [Option("use-interface", Required = false, HelpText = "Add interface to generated code")]
+        public bool UseInterface { get; set; }
+
 
         public static Options Parse(string[] args)
         {

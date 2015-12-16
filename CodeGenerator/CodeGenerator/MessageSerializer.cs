@@ -52,6 +52,11 @@ namespace SilentOrbit.ProtocolBuffers
 
         void GenerateReader(ProtoMessage m)
         {
+            if (options.UseInterface)
+            {
+                GenerateIntefaceImplReader(m);
+            }
+
             #region Helper Deserialize Methods
             string refstr = (m.OptionType == "struct") ? "ref " : "";
             if (m.OptionType != "interface")
@@ -290,6 +295,12 @@ namespace SilentOrbit.ProtocolBuffers
         /// </summary>
         void GenerateWriter(ProtoMessage m)
         {
+            if (options.UseInterface)
+            {
+                GenerateIntefaceImplWriter(m);
+            }
+          
+
             string stack = "global::SilentOrbit.ProtocolBuffers.ProtocolParser.Stack";
             if (options.ExperimentalStack != null)
             {
@@ -349,6 +360,22 @@ namespace SilentOrbit.ProtocolBuffers
             cw.WriteLine("var data = SerializeToBytes(instance);");
             cw.WriteLine("global::SilentOrbit.ProtocolBuffers.ProtocolParser.WriteUInt32(stream, (uint)data.Length);");
             cw.WriteLine("stream.Write(data, 0, data.Length);");
+            cw.EndBracket();
+        }
+
+        private void GenerateIntefaceImplReader(ProtoMessage m)
+        {
+            cw.Summary("Generates an Object out of the given byte[]");
+            cw.Bracket(m.OptionAccess + " " + "SilentOrbit.ProtocolBuffers.IProtoBuf" + " Deserialize(byte[] buffer)");
+            cw.WriteLine("return Deserialize(buffer, this);");
+            cw.EndBracketSpace();
+        }
+
+        private void GenerateIntefaceImplWriter(ProtoMessage m)
+        {
+            cw.Summary("Helper: Serialize into a MemoryStream and return its byte array");
+            cw.Bracket(m.OptionAccess + " byte[] Serialize()");
+            cw.WriteLine("return SerializeToBytes(this);");
             cw.EndBracket();
         }
     }

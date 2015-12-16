@@ -119,9 +119,18 @@ This file will be overwritten when CodeGenerator is run.");
             else
             {
                 string libPath = Path.Combine(Path.GetDirectoryName(csPath), "ProtocolParser.cs");
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                string[] result = assembly.GetManifestResourceNames();
+                Console.WriteLine("Assembly resources:");
+                foreach (string s in result)
+                {
+                    Console.WriteLine("--> " + s);
+                }
+                Console.WriteLine("----------");
                 using (TextWriter codeWriter = new StreamWriter(libPath, false, Encoding.UTF8))
                 {
                     codeWriter.NewLine = "\r\n";
+                    ReadCode(codeWriter, "IProtoBuf", true);
                     ReadCode(codeWriter, "ProtocolParser", true);
                     ReadCode(codeWriter, "ProtocolParserExceptions", false);
                     ReadCode(codeWriter, "ProtocolParserFixed", false);
@@ -140,7 +149,13 @@ This file will be overwritten when CodeGenerator is run.");
         private static void ReadCode(TextWriter code, string name, bool includeUsing)
         {
             code.WriteLine("#region " + name);
-
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
+            if (stream == null)
+            {
+                Console.WriteLine("could not find stream in assembly for " + name);
+                code.WriteLine("#endregion");
+                return;
+            }
             using (TextReader tr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(name), Encoding.UTF8))
             {
                 while (true)
