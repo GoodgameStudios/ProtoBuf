@@ -33,8 +33,17 @@ namespace SilentOrbit.ProtocolBuffers
             else
             {
                 if (options.SerializableAttributes)
+                {
                     cw.Attribute("System.Serializable");
-                cw.Bracket(m.OptionAccess + " partial " + m.OptionType + " " + m.SerializerType);
+                }
+                if (options.UseInterface)
+                {
+                    cw.Bracket(m.OptionAccess + " partial " + m.OptionType + " " + m.SerializerType + " : " + "SilentOrbit.ProtocolBuffers.IProtoBuf");
+                }
+                else
+                {
+                    cw.Bracket(m.OptionAccess + " partial " + m.OptionType + " " + m.SerializerType);
+                }
             }
 
             GenerateReader(m);
