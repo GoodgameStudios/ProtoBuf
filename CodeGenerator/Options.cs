@@ -52,8 +52,9 @@ namespace SilentOrbit.ProtocolBuffers
         /// <summary>
         /// Path to the generated cs files
         /// </summary>
-        [Option('o', "output", Required = false, HelpText = "Path to the generated .cs file.")]
+        [Option('o', "output", Required = false, HelpText = "Folder where the generated .cs files will be placed.  default output folder in the current directory is used if you don't provide a value")]
         public string OutputPath { get; set; }
+
 
         /// <summary>
         /// Use experimental stack per message type
@@ -151,26 +152,17 @@ namespace SilentOrbit.ProtocolBuffers
                 options.SourceDir = Directory.GetCurrentDirectory();
             }
 
-
-            //Backwards compatibility
-            string firstPathCs = inputs[0];
-            firstPathCs = Path.Combine(
-                Path.GetDirectoryName(firstPathCs),
-                Path.GetFileNameWithoutExtension(firstPathCs)) + ".cs";
-
             if (options.OutputPath == null)
             {
-                //Use first .proto as base for output
-                options.OutputPath = firstPathCs;
-                Console.Error.WriteLine("Warning: Please use the new syntax: --output \"" + options.OutputPath + "\"");
+                options.OutputPath = Path.GetFullPath("output");
+                Console.Error.WriteLine("Warning: output FOLDER: (--output ) was not defined - default will be used " + options.OutputPath);
             }
-            //If output is a directory then the first input filename will be used.
-            if (options.OutputPath.EndsWith(Path.DirectorySeparatorChar.ToString()) || Directory.Exists(options.OutputPath))
+            else
             {
-                Directory.CreateDirectory(options.OutputPath);
-                options.OutputPath = Path.Combine(options.OutputPath, Path.GetFileName(firstPathCs));
+                var fullpath = Path.GetFullPath(options.OutputPath);
+                Console.WriteLine("--output =  " + options.OutputPath + "  full path to output folder= " + fullpath);
+                options.OutputPath = fullpath;
             }
-            options.OutputPath = Path.GetFullPath(options.OutputPath);
 
             if (options.ExperimentalStack != null && !options.ExperimentalStack.Contains("."))
                 options.ExperimentalStack = "global::SilentOrbit.ProtocolBuffers." + options.ExperimentalStack;
@@ -218,7 +210,7 @@ namespace SilentOrbit.ProtocolBuffers
                 AdditionalNewLineAfterOption = true,
                 AddDashesToOption = true
             };
-            help.AddPreOptionsLine("Usage: CodeGenerator.exe [input-files.proto] --output output-file.cs");
+            help.AddPreOptionsLine("Usage: CodeGenerator.exe --src-dir protoSrcDir --output generatedOutputDir *.proto --use-interface --net2");
             help.AddOptions(this);
             return help;
         }
