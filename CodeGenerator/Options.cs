@@ -171,7 +171,7 @@ namespace SilentOrbit.ProtocolBuffers
         /// </summary>
         /// <returns>List of full paths to the files.</returns>
         /// <param name="paths">List of relative paths with possible wildcards in the filename.</param>
-        static List<string> ExpandFileWildCard(IEnumerable<string> paths)
+        private static List<string> ExpandFileWildCard(IEnumerable<string> paths)
         {
             //Thanks to https://stackoverflow.com/a/2819150
             var list = new List<string>();
@@ -186,7 +186,7 @@ namespace SilentOrbit.ProtocolBuffers
 
                 var file = Path.GetFileName(expandedPath);
 
-                foreach (var filepath in Directory.GetFiles(dir, file))
+                foreach (var filepath in Directory.GetFiles(dir, file, SearchOption.AllDirectories))
                     list.Add(Path.GetFullPath(filepath));
             }
 
