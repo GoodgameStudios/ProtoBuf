@@ -375,7 +375,7 @@ namespace SilentOrbit.ProtocolBuffers
         private void GenerateIntefaceImplReader(ProtoMessage m)
         {
             cw.Summary("Generates an Object out of the given byte[]");
-            cw.Bracket(m.OptionAccess + " " + "SilentOrbit.ProtocolBuffers.IProtoBuf" + " Deserialize(byte[] buffer)");
+            cw.Bracket(m.OptionAccess + " " + "SilentOrbit.ProtocolBuffers.IProtoBuf" + " ToObject(byte[] buffer)");
             cw.WriteLine("return Deserialize(buffer, this);");
             cw.EndBracketSpace();
         }
@@ -383,7 +383,7 @@ namespace SilentOrbit.ProtocolBuffers
         private void GenerateIntefaceImplWriter(ProtoMessage m)
         {
             cw.Summary("Helper: Serialize into a MemoryStream and return its byte array");
-            cw.Bracket(m.OptionAccess + " byte[] Serialize()");
+            cw.Bracket(m.OptionAccess + " byte[] ToBytes()");
             cw.WriteLine("return SerializeToBytes(this);");
             cw.EndBracket();
         }
