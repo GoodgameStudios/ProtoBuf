@@ -7,6 +7,16 @@ namespace SilentOrbit.ProtocolBuffers
     class FileParser
     {
         /// <summary>
+        /// The _source dir where protofiles are located and searched for imports/dependencies
+        /// </summary>
+        private string _sourceDir;
+
+        public FileParser(string sourceDir)
+        {
+            _sourceDir = sourceDir;
+        }
+
+        /// <summary>
         /// Paths that has already been imported
         /// </summary>
         readonly Dictionary<string, ProtoCollection> imported = new Dictionary<string, ProtoCollection>();
@@ -22,13 +32,13 @@ namespace SilentOrbit.ProtocolBuffers
             var basePath = Path.Combine(Path.GetFullPath(Directory.GetCurrentDirectory()), "dummy"); 
             foreach (string rawPath in inputProto)
             {
-                string protoPath = GetFullPath(basePath, rawPath);
+                string protoPath = GetFullPath( rawPath);
                 var proto = Import(protoPath);
                 collection.Merge(proto);
 
                 //Include non public imports for the first level
                 foreach (var path in proto.Import)
-                    toImport.Add(GetFullPath(protoPath, path));
+                    toImport.Add(GetFullPath( path));
             }
 
             //Read imported files, nested
@@ -69,20 +79,24 @@ namespace SilentOrbit.ProtocolBuffers
             }
 
             foreach (var path in proto.ImportPublic)
-                toImport.Add(GetFullPath(protoPath, path));
+                toImport.Add(GetFullPath(path));
 
             imported.Add(protoPath, proto);
 
             return proto;
         }
 
-        static string GetFullPath(string baseProtoPath, string importPath)
+        private string GetFullPath(string importPath)
         {
+            Console.WriteLine("GetFullPath for: "  + importPath);
             if (Path.IsPathRooted(importPath))
+            {
+                //  Console.WriteLine("path is rooted " + importPath + " --> " + Path.GetFullPath(importPath));
                 return Path.GetFullPath(importPath);
-
-            var dir = Path.GetDirectoryName(baseProtoPath);
-            return Path.GetFullPath(Path.Combine(dir, importPath));
+            }
+            var fullpath = Path.GetFullPath(Path.Combine(_sourceDir, importPath));
+            // Console.WriteLine("dir=  " + _sourceDir + " --> " + "fullpath " + fullpath);
+            return fullpath;
         }
     }
 }

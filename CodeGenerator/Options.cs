@@ -38,6 +38,12 @@ namespace SilentOrbit.ProtocolBuffers
         public bool UseTabs { get; set; }
 
         /// <summary>
+        /// Path to the source dir where the protofiles are located (and where imports will be searched)
+        /// </summary>
+        [Option("src-dir", Required = false, HelpText = "Directory where the proto files reside, where the dependencies among protos will be searched. the current directory is used if you don't provide a value")]
+        public string SourceDir { get; set; }
+
+        /// <summary>
         /// List of the protos that will be generated  (accepts wildcard and search recursively in the directory provided)
         /// </summary>
         [Value(0, Required = true)]
@@ -139,6 +145,12 @@ namespace SilentOrbit.ProtocolBuffers
                     error = true;
                 }
             }
+
+            if (options.SourceDir == null)
+            {
+                options.SourceDir = Directory.GetCurrentDirectory();
+            }
+
 
             //Backwards compatibility
             string firstPathCs = inputs[0];

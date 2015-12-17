@@ -1,9 +1,4 @@
 using System;
-using System.IO;
-using System.Threading;
-using SilentOrbit.Code;
-using System.Collections.Generic;
-
 namespace SilentOrbit.ProtocolBuffers
 {
     public class Builder
@@ -27,7 +22,7 @@ namespace SilentOrbit.ProtocolBuffers
 
         public static void Build(Options options)
         {
-            var parser = new FileParser();
+            var parser = new FileParser(options.SourceDir);
             var collection = parser.Import(options.InputProto);
 
             Console.WriteLine(collection);
