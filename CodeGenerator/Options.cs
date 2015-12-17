@@ -37,6 +37,9 @@ namespace SilentOrbit.ProtocolBuffers
         [Option('t', "use-tabs", HelpText = "If set generated code will use tabs rather than 4 spaces.")]
         public bool UseTabs { get; set; }
 
+        /// <summary>
+        /// List of the protos that will be generated  (accepts wildcard and search recursively in the directory provided)
+        /// </summary>
         [Value(0, Required = true)]
         public IEnumerable<string> InputProto { get; set; }
 
