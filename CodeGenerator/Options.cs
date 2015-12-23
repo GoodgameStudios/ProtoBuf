@@ -136,6 +136,7 @@ namespace SilentOrbit.ProtocolBuffers
                 return null;
             }
 
+            Console.WriteLine("--input =  " + options.InputProto);
             var inputs = ExpandFileWildCard(options.InputProto);
             options.InputProto = inputs;
             foreach (var input in inputs)
@@ -146,11 +147,13 @@ namespace SilentOrbit.ProtocolBuffers
                     error = true;
                 }
             }
+            Console.WriteLine("ProtoFiles =  " + options.InputProto);
 
             if (options.SourceDir == null)
             {
                 options.SourceDir = Directory.GetCurrentDirectory();
             }
+            Console.WriteLine("--srcdir =  " + options.SourceDir);
 
             if (options.OutputPath == null)
             {

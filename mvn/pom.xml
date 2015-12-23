@@ -1,87 +1,37 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>external.3rdparty.tools</groupId>
 	<artifactId>silentorbit</artifactId>
-	<version>0.3.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-<build>
-<plugins>
+	<modules>
+		<!--	<module>build_exe</module>-->
+		<module>compiler</module>
+		<module>runtime</module>
+	</modules>
+	<build>
 
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.0.0</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>generated</directory>
-						</fileset>
-						<fileset>
-							<directory>.</directory>
-							<includes><include>**/*.cs</include></includes>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.0.0</version>
+					<executions>
+						<execution>
+							<id>auto-clean</id>
+							<phase>validate</phase>
+							<goals>
+								<goal>clean</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 
-			
-	<plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.4.0</version>
-        <executions>
-		<execution>
-			<id>csharp</id>
-			  <phase>validate</phase>
-			  <configuration>
-          <executable>..\bin\CodeGenerator\Release\CodeGenerator.exe</executable>
-           <arguments>
-            	<argument>test.proto</argument>
-            	<argument>--net2</argument>
-							<argument>--use-interface</argument>
-							<argument>--src-dir=.</argument>
-							<argument>--output=target</argument>
-          </arguments>
-        </configuration>
-        <goals>
-              <goal>exec</goal>
-			  </goals>
-			</execution>
-			  </executions>
-    </plugin>
 
-    <plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-assembly-plugin</artifactId>
-		<executions>
-			<execution>
-			<id>package-compiler</id>
-			<configuration>
-				<descriptor>assembly_compiler.xml</descriptor>
-					<finalName>${project.artifactId}-${project.version}-compiler</finalName>
-			</configuration>
-				<phase>package</phase>
-				<goals>
-					<goal>single</goal>
-				</goals>
-			</execution>
-			
-			<execution>
-			<id>package-runtime</id>
-			<configuration>
-				<descriptor>assembly_runtime.xml</descriptor>
-					<finalName>${project.artifactId}-${project.version}-runtime</finalName>
-			</configuration>
-				<phase>package</phase>
-				<goals>
-					<goal>single</goal>
-				</goals>
-			</execution>
-		</executions>
-    </plugin>
-	
-</plugins>
 	</build>
-	</project>
+
+</project>
