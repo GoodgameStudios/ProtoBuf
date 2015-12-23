@@ -1,4 +1,4 @@
-bin/
+bin/CodeGenerator/Debug/
 *.userprefs
 *~
 *.pidb
