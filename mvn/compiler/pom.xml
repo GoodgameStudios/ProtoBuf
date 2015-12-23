@@ -16,7 +16,9 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>../../bin/CodeGenerator/Release</directory>
+			<!-- until we can build solutions from maven - jenkins we have to manually do this an commit it to repo :-(  --> 
+				<directory>../CodeGeneratorRelease</directory>	
+				<!--<directory>../../bin/CodeGenerator/Release</directory>-->
 				<excludes>
 					<exclude>**/*.pdb</exclude>
 				</excludes>
