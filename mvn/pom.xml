@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>external.3rdparty.tools</groupId>
 	<artifactId>silentorbit</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
