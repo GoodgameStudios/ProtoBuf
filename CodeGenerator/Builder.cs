@@ -41,7 +41,14 @@ namespace SilentOrbit.ProtocolBuffers
             }
 
             //Generate code
-            ProtoCode.Save(collection, options);
+            if (options.SplitOutput)
+            {
+                ProtoCodeSplitted.Save(collection, options);
+            }
+            else
+            {
+                ProtoCode.Save(collection, options);
+            }
             Console.WriteLine("Saved: " + options.OutputPath);
         }
     }

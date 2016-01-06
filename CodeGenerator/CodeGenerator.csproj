@@ -40,13 +40,14 @@
   <ItemGroup>
     <Compile Include="Builder.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CodeGenerator\ProtoCode.cs" />
     <Compile Include="ProtoParser.cs" />
     <Compile Include="TokenReader.cs" />
     <Compile Include="ProtoPrepare.cs" />
     <Compile Include="Proto\Field.cs" />
     <Compile Include="Proto\Wire.cs" />
     <Compile Include="CodeGenerator\MessageCode.cs" />
-    <Compile Include="CodeGenerator\ProtoCode.cs" />
+    <Compile Include="CodeGenerator\ProtoCodeSplitted.cs" />
     <Compile Include="Proto\FieldRule.cs" />
     <Compile Include="Proto\ProtoFormatException.cs" />
     <Compile Include="Proto\ProtoMessage.cs" />
@@ -66,8 +67,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-   <EmbeddedResource Include="ProtocolParser\IProtoBuf.cs" >
-	<LogicalName>IProtoBuf</LogicalName>
+    <EmbeddedResource Include="ProtocolParser\IProtoBuf.cs">
+      <LogicalName>IProtoBuf</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="ProtocolParser\ProtocolParser.cs">
       <LogicalName>ProtocolParser</LogicalName>

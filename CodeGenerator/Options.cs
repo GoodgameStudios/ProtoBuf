@@ -1,10 +1,10 @@
 using System;
-using CommandLine;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using CommandLine.Text;
+using System.Linq;
 using System.Reflection;
+using CommandLine;
+using CommandLine.Text;
 
 namespace SilentOrbit.ProtocolBuffers
 {
@@ -22,13 +22,19 @@ namespace SilentOrbit.ProtocolBuffers
         /// <summary>
         /// Convert message/class and field/propery names to CamelCase
         /// </summary>
-        [Option("preserve-names", HelpText = "Keep names as written in .proto, otherwise class and field names by default are converted to CamelCase")]
+        [Option("preserve-names",
+            HelpText =
+                "Keep names as written in .proto, otherwise class and field names by default are converted to CamelCase"
+            )]
         public bool PreserveNames { get; set; }
 
         /// <summary>
         /// If false, an error will occur.
         /// </summary>
-        [Option("fix-nameclash", HelpText = "If a property name is the same as its class name or any subclass the property will be renamed. if the name clash occurs and this flag is not set, an error will occur and the code generation is aborted.")]
+        [Option("fix-nameclash",
+            HelpText =
+                "If a property name is the same as its class name or any subclass the property will be renamed. if the name clash occurs and this flag is not set, an error will occur and the code generation is aborted."
+            )]
         public bool FixNameclash { get; set; }
 
         /// <summary>
@@ -40,7 +46,10 @@ namespace SilentOrbit.ProtocolBuffers
         /// <summary>
         /// Path to the source dir where the protofiles are located (and where imports will be searched)
         /// </summary>
-        [Option("src-dir", Required = false, HelpText = "Directory where the proto files reside, where the dependencies among protos will be searched. the current directory is used if you don't provide a value")]
+        [Option("src-dir", Required = false,
+            HelpText =
+                "Directory where the proto files reside, where the dependencies among protos will be searched. the current directory is used if you don't provide a value"
+            )]
         public string SourceDir { get; set; }
 
         /// <summary>
@@ -52,14 +61,20 @@ namespace SilentOrbit.ProtocolBuffers
         /// <summary>
         /// Path to the generated cs files
         /// </summary>
-        [Option('o', "output", Required = false, HelpText = "Folder where the generated .cs files will be placed.  default output folder in the current directory is used if you don't provide a value")]
+        [Option('o', "output", Required = false,
+            HelpText =
+                "Folder where the generated .cs files will be placed.  default output folder in the current directory is used if you don't provide a value"
+            )]
         public string OutputPath { get; set; }
 
 
         /// <summary>
         /// Use experimental stack per message type
         /// </summary>
-        [Option("experimental-message-stack", HelpText = "Assign the name of the stack implementatino to use for each message type, included options are ThreadSafeStack, ThreadUnsafeStack, ConcurrentBagStack or the full namespace to your own implementation.")]
+        [Option("experimental-message-stack",
+            HelpText =
+                "Assign the name of the stack implementatino to use for each message type, included options are ThreadSafeStack, ThreadUnsafeStack, ConcurrentBagStack or the full namespace to your own implementation."
+            )]
         public string ExperimentalStack { get; set; }
 
         /// <summary>
@@ -113,6 +128,8 @@ namespace SilentOrbit.ProtocolBuffers
         [Option("use-interface", Required = false, HelpText = "Add interface to generated code")]
         public bool UseInterface { get; set; }
 
+        [Option("split-output", Required = false, HelpText = "Proto messages are splitted in single files")]
+        public bool SplitOutput { get; set; }
 
         public static Options Parse(string[] args)
         {
@@ -157,15 +174,26 @@ namespace SilentOrbit.ProtocolBuffers
 
             if (options.OutputPath == null)
             {
-                options.OutputPath = Path.GetFullPath("output");
-                Console.Error.WriteLine("Warning: output FOLDER: (--output ) was not defined - default will be used " + options.OutputPath);
+                options.OutputPath = DEFAULT_OUTPUT_FOLDER;
+                Console.Error.WriteLine(
+                    "Warning: output FOLDER: (--output ) was not defined - default will be used " +
+                    options.OutputPath);
             }
-            else
+
+
+            if (!options.SplitOutput)
             {
-                var fullpath = Path.GetFullPath(options.OutputPath);
-                Console.WriteLine("--output =  " + options.OutputPath + "  full path to output folder= " + fullpath);
-                options.OutputPath = fullpath;
+                //If output is a directory then the first input filename will be used.
+                if (!options.OutputPath.EndsWith(".cs"))
+                {
+                    string firstPathCs = inputs[0];
+                    firstPathCs = Path.GetFileNameWithoutExtension(firstPathCs) + ".cs";
+                    options.OutputPath = Path.Combine(options.OutputPath, firstPathCs);
+                }
             }
+            var fullpath = Path.GetFullPath(options.OutputPath);
+            Console.WriteLine("--output =  " + options.OutputPath + "  full path to output folder= " + fullpath);
+            options.OutputPath = fullpath;
 
             if (options.ExperimentalStack != null && !options.ExperimentalStack.Contains("."))
                 options.ExperimentalStack = "global::SilentOrbit.ProtocolBuffers." + options.ExperimentalStack;
@@ -175,6 +203,8 @@ namespace SilentOrbit.ProtocolBuffers
             else
                 return options;
         }
+
+        private static readonly string DEFAULT_OUTPUT_FOLDER = "output";
 
         /// <summary>
         /// Expand wildcards in the filename part of the input file argument.
@@ -213,10 +243,10 @@ namespace SilentOrbit.ProtocolBuffers
                 AdditionalNewLineAfterOption = true,
                 AddDashesToOption = true
             };
-            help.AddPreOptionsLine("Usage: CodeGenerator.exe --src-dir protoSrcDir --output generatedOutputDir *.proto --use-interface --net2");
+            help.AddPreOptionsLine(
+                "Usage: CodeGenerator.exe --src-dir protoSrcDir --output generatedOutputDir *.proto --use-interface --net2");
             help.AddOptions(this);
             return help;
         }
     }
 }
-
