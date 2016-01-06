@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>external.3rdparty.tools</groupId>
 		<artifactId>silentorbit</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>external.3rdparty.tools.silentorbit</groupId>
 	<artifactId>runtime</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 
 
 	<properties>
@@ -37,6 +37,7 @@
 								<argument>test.proto</argument>
 								<argument>--net2</argument>
 								<argument>--use-interface</argument>
+								<argument>--split-output</argument>
 								<argument>--output=${project.build.directory}\generated</argument>
 								<!--<argument>-output=..\generated</argument>-->
 							</arguments>
