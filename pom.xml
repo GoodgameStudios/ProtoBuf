@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>external.3rdparty.tools</groupId>
 	<artifactId>silentorbit</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>0.9.0</version>
 	<packaging>pom</packaging>
 
 	<modules>
 		<!--	<module>build_exe</module>-->
-		<module>compiler</module>
-		<module>runtime</module>
+		<module>mvn/compiler</module>
+		<module>mvn/runtime</module>
 	</modules>
 	<build>
 
