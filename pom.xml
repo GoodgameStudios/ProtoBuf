@@ -8,8 +8,8 @@
 
 	<modules>
 		<!--	<module>build_exe</module>-->
-		<module>mvn/compiler</module>
-		<module>mvn/runtime</module>
+		<module>compiler</module>
+		<module>runtime</module>
 	</modules>
 	<build>
 

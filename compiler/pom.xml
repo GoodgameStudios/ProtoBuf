@@ -2,7 +2,6 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-
 	<parent>
 		<groupId>external.3rdparty.tools</groupId>
 		<artifactId>silentorbit</artifactId>
@@ -15,7 +14,8 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>../../bin/CodeGenerator/Release</directory>
+			<!-- maven-resources-plugin resolves path from this pom (the module pom ) -->
+				<directory>../bin/CodeGenerator/Release</directory>
 				<excludes>
 					<exclude>**/*.pdb</exclude>
 				</excludes>
